@@ -15,3 +15,4 @@ g++ neural-net-txt.cpp -o neural-net-txt
 ./neural-net-txt > out.txt
 ```
 
+https://youtu.be/ndAfWKmKF34
