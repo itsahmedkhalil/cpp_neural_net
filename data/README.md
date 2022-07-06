@@ -12,3 +12,4 @@ g++ neural-net.cpp -o neural-net
 ```
 
 ### Test
+https://youtu.be/ndAfWKmKF34
