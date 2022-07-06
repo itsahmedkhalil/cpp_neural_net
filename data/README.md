@@ -10,3 +10,5 @@ g++ makeTrainingSamples.cpp -o makeTrainingSamples
 g++ neural-net.cpp -o neural-net
 ./neural-net > out.txt
 ```
+
+### Test
