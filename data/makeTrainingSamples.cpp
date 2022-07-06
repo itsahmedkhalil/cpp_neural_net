@@ -16,7 +16,3 @@ int main() {
         cout << "out: " << t << ".0" << endl;
     }
 } 
-
-git add .
-git commit -m "."
-git push origin main

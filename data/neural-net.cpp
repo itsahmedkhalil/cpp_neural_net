@@ -419,7 +419,6 @@ Net::Net(const vector<unsigned> &topology)
             // back() is the standard container member function that returns the last member in the container
             // Append the nearly constructed neuron to the m_layer container
             m_layers.back().push_back(Neuron(numOutputs, neuronNum));
-            cout << "Made a neuron!" << endl;
         }
 
 

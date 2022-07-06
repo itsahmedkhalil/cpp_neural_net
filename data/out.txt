@@ -1,3 +1,13 @@
+Made a neuron!
+Made a neuron!
+Made a neuron!
+Made a neuron!
+Made a neuron!
+Made a neuron!
+Made a neuron!
+Made a neuron!
+Made a neuron!
+Made a neuron!
 
 Pass 1: Inputs: 1 0 
 Outputs: 0.994386 
