@@ -7,6 +7,6 @@ g++ makeTrainingSamples.cpp -o makeTrainingSamples
 ```
 ### Run the neural net using the training set 
 ```bash
-g++ neural-net-txt.cpp -o neural-net-txt
-./neural-net-txt > out.txt
+g++ neural-net.cpp -o neural-net
+./neural-net > out.txt
 ```
