@@ -114,7 +114,7 @@ public:
     Neuron(unsigned numOutputs, unsigned myIndex);
 
     // Takes a double and sets it to a variable called m_outputVal. 
-    void setOutputVal(double val) {m_outputVal = val;} 
+    void setOutputVal(float val) {m_outputVal = val;} 
     // Returns stored variable called m_outputVal.
     // The object is not modified and so the entire function is wrapped with a const.
     double getOutputVal(void) const {return m_outputVal;}
@@ -132,8 +132,8 @@ public:
 
 private:
     
-    static double transferFunction(double x);
-    static double transferFunctionDerivative(double x);
+    static double transferFunction(float x);
+    static double transferFunctionDerivative(float x);
 
     // Return a random function between 0 and 1
     // Must include cstdlib standard header
@@ -142,7 +142,7 @@ private:
     double sumDOW(const Layer &nextLayer) const; 
     
     // The neuron's output values
-    double m_outputVal;
+    float m_outputVal;
 
     // The weight and change in weight of each neuron to all of the other neurons that it feeds.
     // Need to store 2 doubles and so a struct called connection was created instead of a vector.
@@ -158,11 +158,16 @@ private:
     // [0.0 .. n]
     static double alpha; 
 
+    // Hyperparameter that controls the value to which an ISRLU saturates for negative inputs
+    static double ISRLU_alpha;
+
 };
 
 double Neuron::eta = 0.15; 
 
 double Neuron::alpha = 0.5; 
+
+double Neuron::ISRLU_alpha = 3;
 
 void Neuron::updateInputWeights(Layer &prevLayer)
 {
@@ -217,22 +222,54 @@ void Neuron::calcOutputGradients(double targetVal){
 }
 
 
-double Neuron::transferFunction(double x)
+double Neuron::transferFunction(float x)
 {
-    // tanh - output range [-1.0, 1.0]
-    // Must include cmath standard header
-    return tanh(x);
+    float y;
+    if (x < 0) {
+        long i;
+        float x1, x2;
+        const float threehalfs = 1.5F;
+        x1 = 1 + ISRLU_alpha * x * x;
+        x2 = x1 * 0.5F;
+        y  = x1;
+        i  = * ( long * ) &y;    // evil floating point bit level hacking
+        i  = 0x5f3759df - ( i >> 1 );               // what the fuck? 
+        y  = * ( float * ) &i;
+        y  = x * y * ( threehalfs - ( x2 * y * y ) );   
+
+    } else {
+        y = x;
+    }
+
+    return y;
+
 };
 
-double Neuron::transferFunctionDerivative(double x)
+double Neuron::transferFunctionDerivative(float x)
 {
-    // tanh derivative approximation
-    return 1.0 - x * x;
+    float y;
+    if (x < 0) {
+        long i;
+        float x2;
+        const float threehalfs = 1.5F;
+        x = 1 + ISRLU_alpha * x * x;
+        x2 = x * 0.5F;
+        y  = x;
+        i  = * ( long * ) &y;    // evil floating point bit level hacking
+        i  = 0x5f3759df - ( i >> 1 );               // what the fuck? 
+        y  = * ( float * ) &i;
+        y  =  pow(y * ( threehalfs - ( x2 * y * y ) ),3);   
+
+    } else {
+        y = 1;
+    }
+
+    return y;
 };
 
 void Neuron::feedForward(const Layer &prevLayer)
 {
-    double sum = 0.0;
+    float sum = 0.0;
     //Sum the previous layer's outputs (which are our inputs)
     //Include the bias node from the previous layer
     for (unsigned n = 0; n < prevLayer.size(); ++n)
