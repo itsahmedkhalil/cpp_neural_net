@@ -233,7 +233,7 @@ double Neuron::transferFunction(float x)
         x2 = x1 * 0.5F;
         y  = x1;
         i  = * ( long * ) &y;    // evil floating point bit level hacking
-        i  = 0x5f3759df - ( i >> 1 );               // what the fuck? 
+        i  = 0x5f3759   f - ( i >> 1 );               // what the fuck? 
         y  = * ( float * ) &i;
         y  = x * y * ( threehalfs - ( x2 * y * y ) );   
 
