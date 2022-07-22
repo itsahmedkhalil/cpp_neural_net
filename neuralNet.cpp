@@ -1,4 +1,5 @@
 // Neural Net implementation in C++ using ANSI ISO C++ Standards that can run on any standard compiler
+// Neural Net uses an ISRLU as its activation function to take advantage of C++'s 'fast inverse square root algorithm'
 
 #include <vector>
 #include <iostream>
